@@ -1,24 +1,27 @@
-const socket = io('https://www.simplecart.online/');
+const socket = io('https://www.simplecart.online');
 
 function joinChat() {
     const username = document.getElementById('username').value;
     const secretCode = document.getElementById('secretCode').value;
 
-    if (secretCode === 'devanshbhaiya') {
+    // Send join request with username and secret code
+    socket.emit('join', { username, secretCode });
+}
+
+// Handle join response
+socket.on('joinResponse', (response) => {
+    if (response.success) {
         // Hide the login form and show the chat interface
         document.getElementById('login').style.display = 'none';
         document.getElementById('chat').style.display = 'block';
-
-        // Join the chat room
-        socket.emit('join', { username, secretCode });
     } else {
         alert('Invalid secret code!');
     }
-}
+});
 
 function sendMessage() {
     const message = document.getElementById('messageInput').value;
-    socket.emit('message', message);
+    socket.emit('message', { message });
     document.getElementById('messageInput').value = '';
 }
 
