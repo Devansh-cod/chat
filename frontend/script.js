@@ -1,42 +1,31 @@
-const socket = io();
+const socket = io('https://your-app-name.herokuapp.com');
 
-function joinRoom() {
-    const room = document.getElementById('room').value;
+function joinChat() {
     const username = document.getElementById('username').value;
+    const secretCode = document.getElementById('secretCode').value;
 
-    if (room && username) {
-        document.querySelector('.login-container').style.display = 'none';
-        document.querySelector('.chat-container').style.display = 'block';
+    if (secretCode === 'devanshbhaiya') {
+        // Hide the login form and show the chat interface
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('chat').style.display = 'block';
 
-        socket.emit('joinRoom', { room, username });
+        // Join the chat room
+        socket.emit('join', { username, secretCode });
+    } else {
+        alert('Invalid secret code!');
     }
 }
-
-socket.on('message', (msg) => {
-    const chatBox = document.getElementById('chat-box');
-    const messageElement = document.createElement('div');
-    messageElement.classList.add('message');
-
-    messageElement.innerHTML = `
-        <strong>${msg.username}</strong>
-        <span>${msg.message}</span>
-        <span class="timestamp">${msg.date} ${msg.time}</span>
-    `;
-
-    chatBox.appendChild(messageElement);
-    chatBox.scrollTop = chatBox.scrollHeight;
-});
 
 function sendMessage() {
-    const message = document.getElementById('message-input').value;
-    if (message.trim()) {
-        socket.emit('chatMessage', message);
-        document.getElementById('message-input').value = '';
-    }
+    const message = document.getElementById('messageInput').value;
+    socket.emit('message', message);
+    document.getElementById('messageInput').value = '';
 }
 
-function handleKeyPress(event) {
-    if (event.key === 'Enter') {
-        sendMessage();
-    }
-}
+// Handle incoming messages
+socket.on('message', (data) => {
+    const messagesDiv = document.getElementById('messages');
+    const messageElement = document.createElement('div');
+    messageElement.textContent = `${data.username} (${data.time}): ${data.message}`;
+    messagesDiv.appendChild(messageElement);
+});
