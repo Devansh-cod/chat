@@ -8,7 +8,10 @@ const io = socketIo(server);
 app.use(express.static('frontend'));
 
 io.on('connection', (socket) => {
+    console.log('New client connected');
+
     socket.on('join', (data) => {
+        console.log('Join request:', data); // Debugging log
         // Check the secret code
         if (data.secretCode === 'devanshbhaiya') {
             socket.username = data.username;
@@ -30,6 +33,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('message', (data) => {
+        console.log('Message received:', data); // Debugging log
         if (socket.rooms.has('chatroom')) {
             io.to('chatroom').emit('message', { 
                 username: socket.username, 
@@ -47,6 +51,7 @@ io.on('connection', (socket) => {
                 time: new Date().toLocaleTimeString() 
             });
         }
+        console.log('Client disconnected');
     });
 });
 
