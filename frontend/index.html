@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secret Code Chat</title>
+    <title>Chat App</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="login-container">
-        <h2>Join Chat Room</h2>
-        <input type="text" id="room" placeholder="Enter Secret Code" required>
-        <input type="text" id="username" placeholder="Enter Your Name" required>
-        <button onclick="joinRoom()">Join</button>
+    <div id="login">
+        <h2>Enter Chat Room</h2>
+        <input type="text" id="username" placeholder="Enter your name" required>
+        <input type="text" id="secretCode" placeholder="Enter secret code" required>
+        <button onclick="joinChat()">Join Chat</button>
     </div>
 
-    <div class="chat-container">
-        <div id="chat-box" class="chat-box"></div>
-        <input type="text" id="message-input" placeholder="Type a message..." onkeypress="handleKeyPress(event)">
+    <div id="chat" style="display: none;">
+        <div id="messages"></div>
+        <input type="text" id="messageInput" placeholder="Type a message">
         <button onclick="sendMessage()">Send</button>
     </div>
 
