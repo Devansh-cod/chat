@@ -1,4 +1,4 @@
-const socket = io('https://your-app-name.herokuapp.com');
+const socket = io('https://www.simplecart.online/');
 
 function joinChat() {
     const username = document.getElementById('username').value;
